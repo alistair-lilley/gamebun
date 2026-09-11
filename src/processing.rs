@@ -56,10 +56,10 @@ impl Registers {
 }
 
 struct FlagsRegister {
-    zero: bool,
-    subtract: bool,
-    half_carry: bool,
-    carry: bool
+    zero: bool, // Z
+    subtract: bool, // N
+    half_carry: bool, // H
+    carry: bool // C
 }
 
 const ZERO_FLAG_BYTE_POSITION: u8 = 7;
@@ -97,7 +97,7 @@ struct CPU {
     pc: u16,
     sp: u16,
     ir: u32,
-    ram: RAM,
+    wram: RAM,
 }
 
 struct RAM {
