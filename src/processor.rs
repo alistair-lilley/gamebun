@@ -1,57 +1,60 @@
-// GameBun processing structs 
+// GameBun processor structs 
 use std::{thread, time};
 
+pub mod processor;
+
+// Hardware and hardware setters/getters
 struct Registers {
-    A: u8,
-    B: u8,
-    C: u8,
-    D: u8,
-    E: u8,
-    F: u8,
-    H: u8,
-    L: u8,
+    a: u8,
+    b: u8,
+    c: u8,
+    d: u8,
+    e: u8,
+    f: u8,
+    g: u8,
+    h: u8,
 }
 
 impl Registers {
     // 16-bit registers
-    fn get_AF(&self) -> u16 {
-        (self.A as u16) << 8 
-        | self.F as u16
+    fn get_af(&self) -> u16 {
+        (self.a as u16) << 8 
+        | self.f as u16
     }
 
-    fn get_BC(&self) -> u16 {
-        (self.B as u16) << 8
-        | self.C as u16
+    fn get_bc(&self) -> u16 {
+        (self.b as u16) << 8
+        | self.c as u16
     }
 
-    fn get_DE(&self) -> u16 {
-        (self.D as u16) << 8
-        | self.E as u16
+    fn get_de(&self) -> u16 {
+        (self.d as u16) << 8
+        | self.e as u16
     }
 
-    fn get_HL(&self) -> u16 {
-        (self.H as u16) << 8
-        | self.L as u16
+    fn get_hl(&self) -> u16 {
+        (self.h as u16) << 8
+        | self.l as u16
     }
 
-    fn set_AF(&mut self, value: u16) {
-        self.A = ((value & 0xFF00) >> 8) as u8;
-        self.F = (value & 0xFF) as u8;
+    fn set_af(&mut self, value: u16) {
+        self.a = ((value & 0xFF00) >> 8) as u8;
+        self.f = (value & 0xFF) as u8;
     }
 
-    fn set_BC(&mut self, value: u16) {
-        self.B = ((value & 0xFF00) >> 8) as u8;
-        self.C = (value & 0xFF) as u8;
+    fn set_bc(&mut self, value: u16) {
+        self.b = ((value & 0xFF00) >> 8) as u8;
+        self.c = (value & 0xFF) as u8;
     }
 
-    fn set_DE(&mut self, value: u16) {
-        self.D = ((value & 0xFF00) >> 8) as u8;
-        self.E = (value & 0xFF) as u8;
+    fn set_de(&mut self, value: u16) {
+        self.d = ((value & 0xFF00) >> 8) as u8;
+        self.e = (value & 0xFF) as u8;
     }
 
-    fn set_HL(&mut self, value: u16) {
-        self.H = ((value & 0xFF00) >> 8) as u8;
-        self.L = (value & 0xFF) as u8;
+    fn set_hl(&mut self, value: u16) {
+        self.h = ((value & 0xFF00) >> 8) as u8;
+        self.l = (value & 0xFF) as u8;
     }
 }
 
@@ -92,7 +95,11 @@ impl std::convert::From<u8> for FlagsRegister {
     }
 }
 
-struct CPU {
+struct RAM {
+    memory: [u8; 0xFFFF]
+}
+
+pub struct CPU {
     registers: Registers,
     pc: u16,
     sp: u16,
@@ -100,10 +107,7 @@ struct CPU {
     wram: RAM,
 }
 
-struct RAM {
-    memory: [u8; 0xFFFF]
-}
-
+// Clock
 const T_CYCLE_PULSE = time::Duration::from_nanos(238);
 
 impl CPU {
