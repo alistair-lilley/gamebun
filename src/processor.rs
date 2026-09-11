@@ -96,7 +96,13 @@ impl std::convert::From<u8> for FlagsRegister {
 }
 
 struct RAM {
-    memory: [u8; 0xFFFF]
+    memory: [u8; 0xFFFF],
+    rom: ROM,
+    mcb: u8,
+}
+
+struct ROM {
+    data: [u8; 0xFFFFF]
 }
 
 pub struct CPU {
