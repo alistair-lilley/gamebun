@@ -110,7 +110,7 @@ pub struct CPU {
     pc: u16,
     sp: u16,
     ir: u32,
-    wram: RAM,
+    ram: RAM,
 }
 
 // Clock

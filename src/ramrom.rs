@@ -1,4 +1,5 @@
 // GameBun RAM/ROM methods
+use std::fs::File;
 use crate::processor::{RAM, ROM};
 
 pub mod ramrom;
@@ -31,6 +32,17 @@ impl IndexMut<u16> for RAM {
             &mut self.mcb
         } else {
             &mut self.memory[index]
+        }
+    }
+}
+
+impl RAM {
+    pub fn read_ROM(&mut self, filename: String) {
+        let mut buffer = [0u8; 0xFFFFF];
+        let mut file = File::open(filename)?;
+        let bytes_read = file.read(&mut buffer);
+        self.rom = ROM {
+            data: bytes_read
         }
     }
 }
